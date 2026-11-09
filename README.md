@@ -1,0 +1,1 @@
+# ruang-bk-pertiwi1
