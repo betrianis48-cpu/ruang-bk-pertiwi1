@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUANG BK - SMA PERTIWI 1 PADANG</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f6ff',
+                            100: '#e0edff',
+                            200: '#bae0ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .mood-btn.active {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+            color: #1e3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.25);
+        }
+        .urgency-badge-Tinggi { background-color: #ffe4e6; color: #e11d48; border-color: #fecdd3; }
+        .urgency-badge-Darurat { background-color: #4c0519; color: #ffe4e6; border-color: #9f1239; }
+        .urgency-badge-Sedang { background-color: #fef3c7; color: #d97706; border-color: #fde68a; }
+        .urgency-badge-Rendah { background-color: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+    </style>
+</head>
+<body class="min-h-full flex flex-col justify-between text-slate-800 bg-slate-50 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- TOP ANNOUNCEMENT & ROLE SWITCHER BAR -->
+    <nav class="bg-slate-900 text-white py-2.5 px-4 sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
+            <div class="flex items-center space-x-2 text-xs">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold tracking-wide">
+                    <i class="fa-solid fa-user-shield mr-1.5"></i> 100% Rahasia & Free
+                </span>
+                <span class="hidden md:inline text-slate-400">| Portal Konseling Resmi SMA Pertiwi 1 Padang</span>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <!-- Hotline Button -->
+                <button onclick="openEmergencyModal()" class="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-full font-bold text-xs transition-all shadow-sm flex items-center space-x-1.5">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>
+                    <span>Hotline Darurat</span>
+                </button>
+
+                <!-- Dual Role Selector -->
+                <div class="bg-slate-800 p-1 rounded-xl flex items-center border border-slate-700/80">
+                    <button id="roleSiswaBtn" onclick="switchRole('siswa')" class="px-3.5 py-1 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow">
+                        <i class="fa-solid fa-user-graduate mr-1.5"></i>Siswa
+                    </button>
+                    <button id="roleGuruBtn" onclick="switchRole('guru')" class="px-3.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
+                        <i class="fa-solid fa-user-tie mr-1.5"></i>Guru BK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CENTERED BIG HEADER BRANDING -->
+    <header class="bg-white border-b border-slate-200/80 shadow-sm relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-50/80 via-blue-50/20 to-transparent pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto text-center py-8 px-4 relative z-10">
+            <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-blue-600 to-indigo-900 text-white rounded-2xl shadow-lg shadow-blue-500/20 mb-3 transform hover:scale-105 transition-transform">
+                <i class="fa-solid fa-heart-pulse text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-900 tracking-wider uppercase">
+                RUANG BK
+            </h1>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 mt-1 tracking-wide">
+                SMA PERTIWI 1 PADANG
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-2 max-w-lg mx-auto font-medium">
+                "Layanan Konseling Rahasia, Empatis, dan Aman untuk Seluruh Siswa"
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= SISWA PORTAL VIEW ================= -->
+        <div id="siswaView" class="space-y-6">
+            
+            <!-- Student Sub-Navigation Tabs -->
+            <div class="flex border-b border-slate-200 space-x-2 md:space-x-4 overflow-x-auto custom-scrollbar pb-1">
+                <button id="tabFormBtn" onclick="switchStudentTab('form')" class="px-4 py-2.5 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Tulis Curhatan</span>
+                </button>
+                <button id="tabRiwayatBtn" onclick="switchStudentTab('riwayat')" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Cek Tiket / Status Balasan</span>
+                    <span id="studentTicketBadge" class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-bold ml-1">0</span>
+                </button>
+                <button id="tabEdukasiBtn" onclick="switchStudentTab('edukasi')" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Edukasi Mental Health</span>
+                </button>
+                <button id="tabKontakBtn" onclick="switchStudentTab('kontak')" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 whitespace-nowrap">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Kontak Tim Guru BK</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: FORMULIR CURHAT SISWA -->
+            <div id="studentFormTab" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+                
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl p-4 sm:p-5 flex items-start space-x-3 text-blue-950">
+                    <div class="p-2.5 bg-blue-600 text-white rounded-xl text-lg shrink-0 shadow-sm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="text-xs sm:text-sm leading-relaxed">
+                        <span class="font-bold text-blue-900 block text-sm mb-0.5">Ruang Aman & Bebas Penghakiman</span>
+                        Kamu berhak merasa aman. Pilih opsi <strong>Anonim</strong> jika tidak ingin nama/kelas diketahui. Setelah submit, kamu akan mendapatkan <strong>Kode Tiket Rahasia (BK-XXXX)</strong> untuk memantau tanggapan hangat Guru BK.
+                    </div>
+                </div>
+
+                <form id="curhatForm" onsubmit="handleStudentFormSubmit(event)" class="space-y-6">
+                    
+                    <!-- 1. Opsi Identitas -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-slate-800">1. Pengaturan Identitas Siswa</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="relative flex items-center p-4 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-blue-500 transition-all group">
+                                <input type="radio" name="identityOption" value="anonim" checked onchange="toggleIdentityInputs()" class="text-blue-600 focus:ring-blue-500">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-slate-800 group-hover:text-blue-600">🕵️ Anonim (Privasi Penuh)</span>
+                                    <span class="block text-xs text-slate-500">Nama dan kelas tidak dicatat dalam sistem.</span>
+                                </div>
+                            </label>
+                            <label class="relative flex items-center p-4 rounded-xl border-2 border-slate-200 cursor-pointer hover:border-blue-500 transition-all group">
+                                <input type="radio" name="identityOption" value="identitas" onchange="toggleIdentityInputs()" class="text-blue-600 focus:ring-blue-500">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-slate-800 group-hover:text-blue-600">👤 Tampilkan Nama & Kelas</span>
+                                    <span class="block text-xs text-slate-500">Guru BK dapat mengenalimu untuk konseling langsung.</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Fields jika pilih Identitas -->
+                        <div id="identityFields" class="hidden grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap Siswa</label>
+                                <input type="text" id="studentNameInput" placeholder="Contoh: Muhammad Farhan" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Kelas & Jurusan</label>
+                                <input type="text" id="studentClassInput" placeholder="Contoh: XI IPA 2" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Visual Mood Selector -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-slate-800">2. Apa Perasaan / Emosimu Saat Ini?</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="moodGrid">
+                            <button type="button" onclick="selectMood('😰 Cemas', this)" class="mood-btn active p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😰</span>
+                                <span class="text-xs font-bold">Cemas</span>
+                            </button>
+                            <button type="button" onclick="selectMood('😢 Sedih', this)" class="mood-btn p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😢</span>
+                                <span class="text-xs font-bold">Sedih</span>
+                            </button>
+                            <button type="button" onclick="selectMood('😡 Marah', this)" class="mood-btn p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😡</span>
+                                <span class="text-xs font-bold">Marah</span>
+                            </button>
+                            <button type="button" onclick="selectMood('😫 Lelah', this)" class="mood-btn p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😫</span>
+                                <span class="text-xs font-bold">Lelah</span>
+                            </button>
+                            <button type="button" onclick="selectMood('😕 Bingung', this)" class="mood-btn p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😕</span>
+                                <span class="text-xs font-bold">Bingung</span>
+                            </button>
+                            <button type="button" onclick="selectMood('😊 Senang', this)" class="mood-btn p-3 rounded-xl border-2 border-slate-200 text-center flex flex-col items-center justify-center transition-all hover:bg-slate-50">
+                                <span class="text-3xl mb-1">😊</span>
+                                <span class="text-xs font-bold">Senang</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="selectedMoodInput" value="😰 Cemas">
+                    </div>
+
+                    <!-- 3. Category & Urgency -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-800">3. Kategori Masalah</label>
+                            <select id="curhatCategorySelect" required class="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="" disabled selected>-- Pilih Kategori Masalah --</option>
+                                <option value="Akademik & Ujian">📚 Akademik, Ujian & Belajar</option>
+                                <option value="Hubungan Pertemanan">🤝 Hubungan Pertemanan & Pergaulan</option>
+                                <option value="Masalah Keluarga">🏠 Masalah Keluarga & Rumah</option>
+                                <option value="Bullying & Kekerasan">🛑 Bullying & Perundungan Sekolah</option>
+                                <option value="Kepercayaan Diri & Emosi">🧠 Kepercayaan Diri & Emosi</option>
+                                <option value="Info Kuliah & Karir">🎓 Info Kuliah & Minat Karir</option>
+                                <option value="Lainnya">✨ Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-800">4. Tingkat Urgensi</label>
+                            <select id="curhatUrgencySelect" required class="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none font-medium">
+                                <option value="Sedang" selected>🟡 Sedang (Direspon pada jam operasional sekolah)</option>
+                                <option value="Tinggi">🔴 Tinggi (Perlu tanggapan cepat hari ini)</option>
+                                <option value="Darurat">🔥 Darurat / Sangat Tertekan (Perlu penanganan mendesak)</option>
+                                <option value="Rendah">🔵 Rendah (Sekadar cerita / Konsultasi santai)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 5. Opsi Layanan Konseling -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-slate-800">5. Bentuk Bantuan yang Kamu Harapkan</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center space-x-3 p-3.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                                <input type="radio" name="preferredMethod" value="Balasan Pesan Online" checked class="text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">💬 Balasan Pesan Online (Tertulis via Tiket)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors">
+                                <input type="radio" name="preferredMethod" value="Janji Konseling Tatap Muka" class="text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">🤝 Janji Tatap Muka di Ruang BK</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. Message Area -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-slate-800">6. Tuliskan Cerita atau Keluh Kesahmu</label>
+                        <textarea id="curhatMessageInput" rows="5" required placeholder="Tuliskan semua perasaan, cerita, atau kebingungan yang sedang kamu hadapi... Guru BK SMA Pertiwi 1 Padang siap mendengarkan tanpa menghakimi." class="w-full p-4 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-y"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <span class="text-xs text-slate-500 flex items-center">
+                            <i class="fa-solid fa-lock text-emerald-600 mr-1.5 text-sm"></i>
+                            Tersimpan rahasia & terenkripsi lokal.
+                        </span>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 hover:from-blue-800 hover:to-indigo-950 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-900/20 flex items-center justify-center space-x-2 text-sm">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Kirim Curhatan Rahasia</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: CEK BALASAN & STATUS TIKET SAYA -->
+            <div id="studentRiwayatTab" class="hidden space-y-6">
+                <!-- Search Box -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center">
+                        <i class="fa-solid fa-magnifying-glass text-blue-600 mr-2"></i> Cari Berdasarkan Kode Tiket Rahasia
+                    </h3>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="ticketSearchCodeInput" placeholder="Masukkan Kode Tiket (Contoh: BK-8F92)" class="uppercase flex-grow px-4 py-3 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 font-mono tracking-wider font-bold">
+                        <button onclick="searchTicketByCode()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition-all shadow-sm">
+                            Cari Tiket
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Found Search Result Container -->
+                <div id="searchResultContainer" class="hidden"></div>
+
+                <!-- Local Student Saved Tickets List -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-800">Daftar Curhatan di Perangkat Ini</h3>
+                        <span class="text-xs text-slate-400 font-medium">Tersimpan otomatis di HP/Browser</span>
+                    </div>
+                    <div id="studentTicketsList" class="space-y-4">
+                        <!-- Dynamic items -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: EDUKASI MENTAL HEALTH SISWA -->
+            <div id="studentEdukasiTab" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Article 1 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-wind text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-wide">Teknik Relaksasi</span>
+                            <h3 class="font-bold text-slate-800 text-base">Metode Pernapasan 4-7-8</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Tarik napas melalui hidung selama 4 detik, tahan napas selama 7 detik, lalu hembuskan perlahan dari mulut selama 8 detik. Lakukan 4 siklus saat kecemasan melanda sebelum presentasi atau ujian.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Article 2 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-rose-500 to-pink-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-shield-cat text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-rose-600 uppercase tracking-wide">Anti Perundungan</span>
+                            <h3 class="font-bold text-slate-800 text-base">Menghadapi Bullying Sekolah</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Ingat bahwa perundungan bukan salahmu. Tetap tenang, hindari membalas dengan kekerasan, catat detail kejadian, dan segera laporkan secara rahasia melalui Ruang BK ini.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Article 3 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-clock-rotate-left text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-amber-600 uppercase tracking-wide">Produktivitas</span>
+                            <h3 class="font-bold text-slate-800 text-base">Teknik Belajar Pomodoro</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Belajar fokus selama 25 menit, lalu istirahat penuh selama 5 menit. Setelah 4 sesi, ambil istirahat panjang 15–30 menit. Cara ini efektif mencegah *burnout* dan otak lelah.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Article 4 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-face-smile text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wide">Self-Compassion</span>
+                            <h3 class="font-bold text-slate-800 text-base">Berhenti Menuntut Kesempurnaan</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Tidak masalah jika sesekali merasa lelah atau gagal. Maafkan dirimu sendiri dan berbicaralah pada diri sendiri sehangat kamu berbicara kepada sahabat terbaikmu.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Article 5 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-graduation-cap text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-purple-600 uppercase tracking-wide">Persiapan Karir</span>
+                            <h3 class="font-bold text-slate-800 text-base">Menentukan Minat Kuliah</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Kenali kelebihanmu, eksplorasi gaya belajar, dan konsultasikan pilihan jurusan PTN/PTS bersama Guru BK SMA Pertiwi 1 Padang untuk pemetaan yang tepat.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Article 6 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-6 text-center">
+                            <i class="fa-solid fa-bed text-4xl"></i>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs font-bold text-cyan-600 uppercase tracking-wide">Kesehatan Fisik</span>
+                            <h3 class="font-bold text-slate-800 text-base">Kualitas Tidur & Mental</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Hindari layar HP 30 menit sebelum tidur. Tidur cukup 7-8 jam sangat krusial untuk kestabilan emosi dan daya ingat saat mengikuti pelajaran di kelas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: KONTAK TIM GURU BK & JAM OPERASIONAL -->
+            <div id="studentKontakTab" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+                    <div class="border-b border-slate-100 pb-3 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800">Tim Bimbingan Konseling SMA Pertiwi 1 Padang</h3>
+                            <p class="text-xs text-slate-500">Kami siap membantu tumbuh kembang dan kenyamananmu di sekolah</p>
+                        </div>
+                        <span class="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-800 rounded-full text-xs font-bold border border-blue-200">
+                            <i class="fa-solid fa-clock mr-1.5 text-blue-600"></i> Senin – Jumat: 07.30 – 15.30 WIB
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Counselor 1 -->
+                        <div class="flex flex-col justify-between p-5 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-blue-300 transition-all space-y-3">
+                            <div class="space-y-2">
+                                <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 font-bold text-xl flex items-center justify-center border border-blue-200">
+                                    👩‍🏫
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Ibu Betrianis, S. Psi, Gr</h4>
+                                    <p class="text-xs text-blue-600 font-bold">Koordinator BK</p>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/6281365039044" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold text-center flex items-center justify-center space-x-1.5 transition-colors">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>0813-6503-9044</span>
+                            </a>
+                        </div>
+
+                        <!-- Counselor 2 -->
+                        <div class="flex flex-col justify-between p-5 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-blue-300 transition-all space-y-3">
+                            <div class="space-y-2">
+                                <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 font-bold text-xl flex items-center justify-center border border-indigo-200">
+                                    👩‍🏫
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Ibu Teci Afdal, S. Pd., Gr</h4>
+                                    <p class="text-xs text-indigo-600 font-bold">Guru BK</p>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/6281266468788" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold text-center flex items-center justify-center space-x-1.5 transition-colors">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>0812-6646-8788</span>
+                            </a>
+                        </div>
+
+                        <!-- Counselor 3 -->
+                        <div class="flex flex-col justify-between p-5 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-blue-300 transition-all space-y-3">
+                            <div class="space-y-2">
+                                <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 font-bold text-xl flex items-center justify-center border border-purple-200">
+                                    👩‍🏫
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Ibu Moni Syofian Anita, S. Pd., Gr</h4>
+                                    <p class="text-xs text-purple-600 font-bold">Guru BK</p>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/6282114478301" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold text-center flex items-center justify-center space-x-1.5 transition-colors">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>0821-1447-8301</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-xs text-blue-900 space-y-1">
+                        <span class="font-bold block text-sm mb-1"><i class="fa-solid fa-location-dot text-blue-600 mr-1.5"></i> Lokasi Ruang BK:</span>
+                        <p>Ruang Konseling Bimbingan BK — SMA Pertiwi 1 Padang (Gedung Utama Lantai 1)</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= GURU BK PORTAL VIEW (PROTECTED) ================= -->
+        <div id="guruView" class="hidden space-y-6">
+            
+            <!-- Dashboard Header Bar -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white font-bold text-xl flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 class="text-lg font-bold text-slate-900">Dashboard Guru BK SMA Pertiwi 1 Padang</h2>
+                            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Sistem Aktif</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Kelola curhatan, jadwalkan konseling, dan atur tanggapan siswa</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="openChangePinModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all">
+                        <i class="fa-solid fa-key mr-1.5"></i>Ubah PIN
+                    </button>
+                    <button onclick="exportDataJSON()" class="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl border border-emerald-200 transition-all">
+                        <i class="fa-solid fa-download mr-1.5"></i>Ekspor JSON
+                    </button>
+                    <button onclick="resetToDemoData()" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl border border-rose-200 transition-all">
+                        <i class="fa-solid fa-rotate-left mr-1.5"></i>Reset Demo Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Metrics Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Curhatan</p>
+                        <h3 id="statTotal" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <i class="fa-solid fa-inbox text-lg"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Menunggu Respon</p>
+                        <h3 id="statPending" class="text-2xl font-extrabold text-amber-600 mt-1">0</h3>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-lg"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Urgensi Tinggi/Darurat</p>
+                        <h3 id="statHigh" class="text-2xl font-extrabold text-rose-600 mt-1">0</h3>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                        <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Janji Tatap Muka</p>
+                        <h3 id="statMeeting" class="text-2xl font-extrabold text-emerald-600 mt-1">0</h3>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-check text-lg"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Visualisation Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bar Chart Category Breakdown -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-chart-column text-blue-600 mr-2"></i> Tren Kategori Masalah Siswa
+                        </h3>
+                        <span class="text-xs text-slate-400">Live Data</span>
+                    </div>
+                    <div class="h-64 w-full relative">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Doughnut Chart Urgency Breakdown -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-chart-pie text-indigo-600 mr-2"></i> Distribusi Urgensi
+                        </h3>
+                        <span class="text-xs text-slate-400">Live Data</span>
+                    </div>
+                    <div class="h-64 w-full relative flex items-center justify-center">
+                        <canvas id="urgencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inbox List & Filters -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="p-5 bg-slate-50/80 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <h3 class="text-base font-bold text-slate-800">Inbox Curhatan Masuk</h3>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- Search Box -->
+                        <input type="text" id="guruSearchInput" onkeyup="filterGuruInbox()" placeholder="Cari Kode/Nama/Isi..." class="px-3.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+
+                        <!-- Filter Urgensi -->
+                        <select id="guruFilterUrgency" onchange="filterGuruInbox()" class="px-3.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl outline-none font-medium">
+                            <option value="all">Semua Urgensi</option>
+                            <option value="Darurat">🔥 Darurat</option>
+                            <option value="Tinggi">🔴 Tinggi</option>
+                            <option value="Sedang">🟡 Sedang</option>
+                            <option value="Rendah">🔵 Rendah</option>
+                        </select>
+
+                        <!-- Filter Status -->
+                        <select id="guruFilterStatus" onchange="filterGuruInbox()" class="px-3.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl outline-none font-medium">
+                            <option value="all">Semua Status</option>
+                            <option value="Menunggu Respon">Menunggu Respon</option>
+                            <option value="Sudah Dibalas">Sudah Dibalas</option>
+                            <option value="Dijadwalkan Tatap Muka">Dijadwalkan Tatap Muka</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divide-y divide-slate-100" id="guruInboxList">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+            <p class="font-extrabold text-blue-900 tracking-wider">RUANG BK — SMA PERTIWI 1 PADANG</p>
+            <p>Sistem Konseling Digital Privacy-First (Local Browser Storage & Direct Client Execution)</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. MODAL SUCCESS SUBMIT (SHOW TICKET CODE) -->
+    <div id="ticketCreatedModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl relative border-t-8 border-emerald-500">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-900">Curhatan Berhasil Terkirim!</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Simpan <strong>Kode Tiket Rahasia</strong> di bawah ini untuk melihat tanggapan dari Guru BK SMA Pertiwi 1 Padang:
+            </p>
+            
+            <div class="bg-slate-100 border border-slate-300 p-4 rounded-xl flex items-center justify-between">
+                <span id="createdTicketCodeDisplay" class="font-mono text-2xl font-black text-blue-900 tracking-widest">BK-XXXX</span>
+                <button onclick="copyTicketCode()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow">
+                    <i class="fa-solid fa-copy mr-1.5"></i>Salin Kode
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-400">
+                Pesanmu telah aman diterima oleh tim Guru BK. Terima kasih sudah berani bercerita!
+            </p>
+
+            <button onclick="closeTicketCreatedModal()" class="w-full py-3 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition-all">
+                Tutup & Lihat Tiket Saya
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. MODAL PIN AUTH FOR GURU BK -->
+    <div id="pinAuthModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl text-center relative border-t-8 border-blue-600">
+            <div class="w-14 h-14 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Akses Portal Guru BK</h3>
+            <p class="text-xs text-slate-500">Masukkan PIN Keamanan untuk membuka dashboard konselor (Default PIN: <strong>1234</strong>)</p>
+            
+            <form onsubmit="verifyGuruPin(event)" class="space-y-4">
+                <input type="password" id="pinAuthInput" placeholder="Masukkan PIN" maxlength="10" required class="w-full text-center tracking-widest font-mono text-2xl py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-600">
+                <div class="flex justify-between space-x-2">
+                    <button type="button" onclick="cancelPinAuth()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Batal</button>
+                    <button type="submit" class="w-1/2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md">Masuk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. MODAL CHANGE PIN -->
+    <div id="changePinModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative">
+            <h3 class="text-base font-bold text-slate-900">Ubah PIN Keamanan Guru BK</h3>
+            <form onsubmit="handleChangePinSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">PIN Lama</label>
+                    <input type="password" id="oldPinInput" required class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">PIN Baru</label>
+                    <input type="password" id="newPinInput" required class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="closeChangePinModal()" class="px-4 py-2 bg-slate-100 text-xs font-bold text-slate-600 rounded-xl">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-xs font-bold text-white rounded-xl shadow">Simpan PIN</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. MODAL GURU REPLY & APPOINTMENT SCHEDULE -->
+    <div id="guruReplyModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-5 shadow-2xl my-8 relative">
+            <button onclick="closeGuruReplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="border-b border-slate-100 pb-3">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Tanggapan Konselor BK</span>
+                <h3 class="text-lg font-bold text-slate-900" id="replyModalStudentName">Detail Curhatan</h3>
+                <p class="text-xs text-slate-400" id="replyModalMeta">Kode Tiket • Tanggal Submit</p>
+            </div>
+
+            <!-- Student Original Message Card -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="font-bold text-slate-600" id="replyModalMood">Mood: 😰 Cemas</span>
+                    <span class="px-2.5 py-0.5 rounded-full font-bold" id="replyModalUrgency">Urgensi Tinggi</span>
+                </div>
+                <p class="text-sm text-slate-800 leading-relaxed font-medium" id="replyModalMessage">"Pesan siswa..."</p>
+            </div>
+
+            <!-- Response Form -->
+            <form id="guruReplyForm" onsubmit="handleGuruReplySubmit(event)" class="space-y-4">
+                <input type="hidden" id="replyModalTicketId">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Status Penanganan</label>
+                    <select id="replyModalStatusSelect" onchange="toggleScheduleFields()" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+                        <option value="Sudah Dibalas">💬 Balas Online (Tanggapan Pesan Tertulis)</option>
+                        <option value="Dijadwalkan Tatap Muka">🤝 Dijadwalkan Pertemuan Tatap Muka</option>
+                    </select>
+                </div>
+
+                <!-- Schedule Fields if Tatap Muka -->
+                <div id="scheduleFieldsContainer" class="hidden p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-3">
+                    <h4 class="text-xs font-bold text-emerald-900 flex items-center">
+                        <i class="fa-solid fa-calendar-days mr-1.5"></i>Jadwal Konseling Tatap Muka (Ruang BK SMA Pertiwi 1 Padang)
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs text-emerald-800 font-medium mb-1">Tanggal & Jam Pertemuan</label>
+                            <input type="datetime-local" id="meetingDateTimeInput" class="w-full px-3 py-2 text-xs border border-emerald-300 rounded-lg outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-emerald-800 font-medium mb-1">Lokasi Ruangan</label>
+                            <input type="text" id="meetingLocationInput" value="Ruang Konseling BK Utama (Lantai 1)" class="w-full px-3 py-2 text-xs border border-emerald-300 rounded-lg outline-none bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Pesan Tanggapan Empatik Guru BK</label>
+                    <textarea id="replyModalResponseText" rows="4" required placeholder="Tuliskan kata-kata empati, saran konkret, atau arahan untuk siswa..." class="w-full p-3.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none resize-y"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" onclick="closeGuruReplyModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">Batal</button>
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md">Simpan Tanggapan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. MODAL EMERGENCY HOTLINE -->
+    <div id="emergencyModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border-2 border-rose-500">
+            <button onclick="closeEmergencyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Bantuan Darurat & Hotline Mental Health</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Jika kamu atau temanmu mengalami bahaya mendesak atau tekanan berat yang butuh pertolongan langsung:</p>
+            </div>
+            <div class="space-y-3 pt-2">
+                <a href="tel:119" class="flex items-center justify-between p-3.5 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 transition-colors">
+                    <div>
+                        <p class="text-xs font-bold text-rose-950">Layanan SEJIWA (Kemenkes RI)</p>
+                        <p class="text-xs text-rose-700">Pencegahan Krisis & Kesehatan Mental</p>
+                    </div>
+                    <span class="px-3 py-1.5 bg-rose-600 text-white font-bold text-xs rounded-lg shadow-sm">Call 119 Ext 8</span>
+                </a>
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+                    <p class="font-bold text-slate-800">Kontak Cepat Tim Guru BK SMA Pertiwi 1 Padang:</p>
+                    <div class="space-y-1 text-slate-600">
+                        <p><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Ibu Betrianis, S. Psi, Gr: <b>0813-6503-9044</b></p>
+                        <p><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Ibu Teci Afdal, S. Pd., Gr: <b>0812-6646-8788</b></p>
+                        <p><i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Ibu Moni Syofian Anita, S. Pd., Gr: <b>0821-1447-8301</b></p>
+                    </div>
+                    <p class="text-[11px] text-blue-800 font-semibold pt-1 border-t border-slate-200">Jam Operasional: Senin – Jumat (07.30 – 15.30 WIB)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // State variables
+        let currentRole = 'siswa';
+        let currentStudentTab = 'form';
+        let isGuruAuthenticated = false;
+        let catChartInstance = null;
+        let urgChartInstance = null;
+
+        // Initial Demo Mock Data
+        const initialSampleTickets = [
+            {
+                id: 'BK-8F92',
+                name: 'Anonim (Siswa XI IPA 2)',
+                isAnon: true,
+                mood: '😰 Cemas',
+                category: 'Akademik & Ujian',
+                urgency: 'Tinggi',
+                preferredMethod: 'Balasan Pesan Online',
+                message: 'Saya sangat cemas menghadapi ujian semester ini. Saya takut nilai saya turun dan mengecewakan orang tua.',
+                status: 'Sudah Dibalas',
+                response: 'Halo nak. Wajar sekali merasa cemas jelang ujian. Cobalah bagi waktu belajar 25 menit (metode Pomodoro) dan istirahat teratur. Kamu pasti bisa!',
+                createdAt: '08/11/2026, 09.30',
+                meetingInfo: null
+            },
+            {
+                id: 'BK-3K81',
+                name: 'Rian (X MIPA 1)',
+                isAnon: false,
+                mood: '😢 Sedih',
+                category: 'Hubungan Pertemanan',
+                urgency: 'Darurat',
+                preferredMethod: 'Janji Konseling Tatap Muka',
+                message: 'Saya merasa dikucilkan oleh teman sekelas dan kesulitan mendapatkan kelompok belajar di sekolah.',
+                status: 'Menunggu Respon',
+                response: '',
+                createdAt: '09/11/2026, 07.45',
+                meetingInfo: null
+            },
+            {
+                id: 'BK-7M24',
+                name: 'Anonim (Siswa X-3)',
+                isAnon: true,
+                mood: '😊 Senang',
+                category: 'Info Kuliah & Karir',
+                urgency: 'Sedang',
+                preferredMethod: 'Janji Konseling Tatap Muka',
+                message: 'Saya bermaksud berkonsultasi mengenai pemetaan jurusan PTN dan persiapan tes SNBP.',
+                status: 'Dijadwalkan Tatap Muka',
+                response: 'Terima kasih sudah bercerita! Mari kita bedah minat bakatmu secara langsung di ruang konseling BK.',
+                createdAt: '07/11/2026, 13.10',
+                meetingInfo: {
+                    dateTime: '2026-11-12T10:00',
+                    location: 'Ruang BK Utama (Lantai 1 Gedung A)'
+                }
+            }
+        ];
+
+        // Storage Operations
+        function getTickets() {
+            const data = localStorage.getItem('ruangbk_sma_pertiwi_tickets');
+            if (!data) {
+                localStorage.setItem('ruangbk_sma_pertiwi_tickets', JSON.stringify(initialSampleTickets));
+                return initialSampleTickets;
+            }
+            return JSON.parse(data);
+        }
+
+        function saveTickets(tickets) {
+            localStorage.setItem('ruangbk_sma_pertiwi_tickets', JSON.stringify(tickets));
+        }
+
+        function getGuruPin() {
+            return localStorage.getItem('ruangbk_sma_pertiwi_pin') || '1234';
+        }
+
+        function saveGuruPin(pin) {
+            localStorage.setItem('ruangbk_sma_pertiwi_pin', pin);
+        }
+
+        // On Page Initialization
+        window.onload = function() {
+            switchRole('siswa');
+            renderStudentTickets();
+            updateStudentBadge();
+        };
+
+        // Dual Role Switcher
+        function switchRole(role) {
+            if (role === 'guru' && !isGuruAuthenticated) {
+                document.getElementById('pinAuthModal').classList.remove('hidden');
+                document.getElementById('pinAuthInput').focus();
+                return;
+            }
+
+            currentRole = role;
+            const siswaView = document.getElementById('siswaView');
+            const guruView = document.getElementById('guruView');
+            const roleSiswaBtn = document.getElementById('roleSiswaBtn');
+            const roleGuruBtn = document.getElementById('roleGuruBtn');
+
+            if (role === 'siswa') {
+                siswaView.classList.remove('hidden');
+                guruView.classList.add('hidden');
+                roleSiswaBtn.className = "px-3.5 py-1 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow";
+                roleGuruBtn.className = "px-3.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white";
+            } else {
+                siswaView.classList.add('hidden');
+                guruView.classList.remove('hidden');
+                roleGuruBtn.className = "px-3.5 py-1 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow";
+                roleSiswaBtn.className = "px-3.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white";
+                renderGuruDashboard();
+            }
+        }
+
+        // PIN Verification
+        function verifyGuruPin(e) {
+            e.preventDefault();
+            const pinEntered = document.getElementById('pinAuthInput').value;
+            if (pinEntered === getGuruPin()) {
+                isGuruAuthenticated = true;
+                document.getElementById('pinAuthModal').classList.add('hidden');
+                document.getElementById('pinAuthInput').value = '';
+                switchRole('guru');
+                showToast('PIN Benar. Selamat Datang Guru BK!', 'success');
+            } else {
+                showToast('PIN Salah! Silakan coba lagi (Default: 1234)', 'error');
+                document.getElementById('pinAuthInput').value = '';
+            }
+        }
+
+        function cancelPinAuth() {
+            document.getElementById('pinAuthModal').classList.add('hidden');
+            document.getElementById('pinAuthInput').value = '';
+        }
+
+        // PIN Change
+        function openChangePinModal() {
+            document.getElementById('changePinModal').classList.remove('hidden');
+        }
+        function closeChangePinModal() {
+            document.getElementById('changePinModal').classList.add('hidden');
+        }
+        function handleChangePinSubmit(e) {
+            e.preventDefault();
+            const oldPin = document.getElementById('oldPinInput').value;
+            const newPin = document.getElementById('newPinInput').value;
+
+            if (oldPin !== getGuruPin()) {
+                showToast('PIN Lama tidak cocok!', 'error');
+                return;
+            }
+            saveGuruPin(newPin);
+            closeChangePinModal();
+            document.getElementById('oldPinInput').value = '';
+            document.getElementById('newPinInput').value = '';
+            showToast('PIN Berhasil Diperbarui!', 'success');
+        }
+
+        // Student Sub-tabs Switching
+        function switchStudentTab(tab) {
+            currentStudentTab = tab;
+            const formTab = document.getElementById('studentFormTab');
+            const riwayatTab = document.getElementById('studentRiwayatTab');
+            const edukasiTab = document.getElementById('studentEdukasiTab');
+            const kontakTab = document.getElementById('studentKontakTab');
+
+            const btnForm = document.getElementById('tabFormBtn');
+            const btnRiwayat = document.getElementById('tabRiwayatBtn');
+            const btnEdukasi = document.getElementById('tabEdukasiBtn');
+            const btnKontak = document.getElementById('tabKontakBtn');
+
+            [btnForm, btnRiwayat, btnEdukasi, btnKontak].forEach(btn => {
+                btn.className = "px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center space-x-2 whitespace-nowrap";
+            });
+
+            [formTab, riwayatTab, edukasiTab, kontakTab].forEach(t => t.classList.add('hidden'));
+
+            if (tab === 'form') {
+                formTab.classList.remove('hidden');
+                btnForm.className = "px-4 py-2.5 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center space-x-2 whitespace-nowrap";
+            } else if (tab === 'riwayat') {
+                riwayatTab.classList.remove('hidden');
+                btnRiwayat.className = "px-4 py-2.5 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center space-x-2 whitespace-nowrap";
+                renderStudentTickets();
+            } else if (tab === 'edukasi') {
+                edukasiTab.classList.remove('hidden');
+                btnEdukasi.className = "px-4 py-2.5 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center space-x-2 whitespace-nowrap";
+            } else if (tab === 'kontak') {
+                kontakTab.classList.remove('hidden');
+                btnKontak.className = "px-4 py-2.5 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center space-x-2 whitespace-nowrap";
+            }
+        }
+
+        // Toggle Identity Form Inputs
+        function toggleIdentityInputs() {
+            const isAnon = document.querySelector('input[name="identityOption"]:checked').value === 'anonim';
+            const fields = document.getElementById('identityFields');
+            if (isAnon) {
+                fields.classList.add('hidden');
+                fields.classList.remove('grid');
+            } else {
+                fields.classList.remove('hidden');
+                fields.classList.add('grid');
+            }
+        }
+
+        // Mood Buttons Selection
+        function selectMood(moodText, elem) {
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            elem.classList.add('active');
+            document.getElementById('selectedMoodInput').value = moodText;
+        }
+
+        // Unique Ticket Generator
+        function generateTicketCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = 'BK-';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Handle Student Submission
+        function handleStudentFormSubmit(e) {
+            e.preventDefault();
+
+            const isAnon = document.querySelector('input[name="identityOption"]:checked').value === 'anonim';
+            let studentName = 'Anonim';
+
+            if (!isAnon) {
+                const n = document.getElementById('studentNameInput').value.trim();
+                const c = document.getElementById('studentClassInput').value.trim();
+                studentName = n ? `${n} (${c || 'Siswa'})` : 'Siswa';
+            }
+
+            const moodValue = document.getElementById('selectedMoodInput').value;
+            if (!moodValue) {
+                showToast('Silakan pilih perasaan (mood) kamu terlebih dahulu!', 'error');
+                return;
+            }
+
+            const ticketCode = generateTicketCode();
+            const newTicket = {
+                id: ticketCode,
+                name: studentName,
+                isAnon: isAnon,
+                mood: moodValue,
+                category: document.getElementById('curhatCategorySelect').value,
+                urgency: document.getElementById('curhatUrgencySelect').value,
+                preferredMethod: document.querySelector('input[name="preferredMethod"]:checked').value,
+                message: document.getElementById('curhatMessageInput').value.trim(),
+                status: 'Menunggu Respon',
+                response: '',
+                createdAt: new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }),
+                meetingInfo: null
+            };
+
+            const tickets = getTickets();
+            tickets.unshift(newTicket);
+            saveTickets(tickets);
+
+            // Reset Form
+            document.getElementById('curhatForm').reset();
+            document.getElementById('selectedMoodInput').value = '😰 Cemas';
+            toggleIdentityInputs();
+
+            // Display Success Ticket Modal
+            document.getElementById('createdTicketCodeDisplay').innerText = ticketCode;
+            document.getElementById('ticketCreatedModal').classList.remove('hidden');
+
+            updateStudentBadge();
+        }
+
+        function closeTicketCreatedModal() {
+            document.getElementById('ticketCreatedModal').classList.add('hidden');
+            switchStudentTab('riwayat');
+        }
+
+        function copyTicketCode() {
+            const code = document.getElementById('createdTicketCodeDisplay').innerText;
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Kode Tiket berhasil disalin!', 'success');
+        }
+
+        // Render Student Saved Tickets List
+        function renderStudentTickets() {
+            const tickets = getTickets();
+            const container = document.getElementById('studentTicketsList');
+            container.innerHTML = '';
+
+            if (tickets.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-xs">
+                        Belum ada curhatan tersimpan di perangkat ini.
+                    </div>
+                `;
+                return;
+            }
+
+            tickets.forEach(ticket => {
+                const card = createStudentTicketCard(ticket);
+                container.appendChild(card);
+            });
+        }
+
+        function createStudentTicketCard(ticket) {
+            let statusBadge = '';
+            if (ticket.status === 'Menunggu Respon') {
+                statusBadge = `<span class="px-2.5 py-1 text-xs font-bold bg-amber-100 text-amber-700 rounded-full flex items-center gap-1"><i class="fa-solid fa-clock"></i>Menunggu Respon</span>`;
+            } else if (ticket.status === 'Sudah Dibalas') {
+                statusBadge = `<span class="px-2.5 py-1 text-xs font-bold bg-blue-100 text-blue-700 rounded-full flex items-center gap-1"><i class="fa-solid fa-check-double"></i>Sudah Dibalas</span>`;
+            } else if (ticket.status === 'Dijadwalkan Tatap Muka') {
+                statusBadge = `<span class="px-2.5 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full flex items-center gap-1"><i class="fa-solid fa-calendar-check"></i>Janji Tatap Muka</span>`;
+            }
+
+            const div = document.createElement('div');
+            div.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3";
+            div.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-mono text-xs font-extrabold text-blue-900 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">#${ticket.id}</span>
+                        <span class="text-xs text-slate-500">• ${ticket.createdAt}</span>
+                    </div>
+                    <div>${statusBadge}</div>
+                </div>
+
+                <div class="space-y-1">
+                    <div class="text-xs text-slate-600">
+                        Kategori: <strong>${ticket.category}</strong> | Mood: ${ticket.mood}
+                    </div>
+                    <p class="text-sm text-slate-800 font-medium">"${escapeHtml(ticket.message)}"</p>
+                </div>
+
+                ${ticket.response ? `
+                    <div class="mt-2 bg-white p-4 rounded-xl border border-blue-100 space-y-1 text-xs">
+                        <div class="font-bold text-blue-900 flex items-center">
+                            <i class="fa-solid fa-user-tie mr-1.5 text-blue-600"></i>Tanggapan Guru BK SMA Pertiwi 1 Padang:
+                        </div>
+                        <p class="text-slate-700 leading-relaxed font-medium">${escapeHtml(ticket.response)}</p>
+                        ${ticket.meetingInfo ? `
+                            <div class="mt-2 pt-2 border-t border-slate-100 font-bold text-emerald-700 flex items-center">
+                                <i class="fa-solid fa-calendar-day mr-1.5"></i>Jadwal Tatap Muka: ${new Date(ticket.meetingInfo.dateTime).toLocaleString('id-ID')} @ ${ticket.meetingInfo.location}
+                            </div>
+                        ` : ''}
+                    </div>
+                ` : ''}
+            `;
+            return div;
+        }
+
+        // Search Ticket by Code
+        function searchTicketByCode() {
+            const input = document.getElementById('ticketSearchCodeInput').value.trim().toUpperCase();
+            const container = document.getElementById('searchResultContainer');
+            
+            if (!input) {
+                showToast('Masukkan kode tiket terlebih dahulu!', 'error');
+                return;
+            }
+
+            const tickets = getTickets();
+            const found = tickets.find(t => t.id === input);
+
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+
+            if (found) {
+                const wrapper = document.createElement('div');
+                wrapper.className = "bg-blue-50 border-2 border-blue-400 p-4 rounded-2xl space-y-2";
+                wrapper.innerHTML = `<h4 class="text-xs font-bold text-blue-900 uppercase">Hasil Pencarian Kode Tiket: ${found.id}</h4>`;
+                wrapper.appendChild(createStudentTicketCard(found));
+                container.appendChild(wrapper);
+            } else {
+                container.innerHTML = `
+                    <div class="bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-2xl text-xs font-bold text-center">
+                        Tiket dengan kode "${input}" tidak ditemukan dalam sistem local.
+                    </div>
+                `;
+            }
+        }
+
+        function updateStudentBadge() {
+            const tickets = getTickets();
+            document.getElementById('studentTicketBadge').innerText = tickets.length;
+        }
+
+        // ================= GURU BK DASHBOARD LOGIC =================
+        function renderGuruDashboard() {
+            const tickets = getTickets();
+
+            // Stats
+            document.getElementById('statTotal').innerText = tickets.length;
+            document.getElementById('statPending').innerText = tickets.filter(t => t.status === 'Menunggu Respon').length;
+            document.getElementById('statHigh').innerText = tickets.filter(t => t.urgency === 'Tinggi' || t.urgency === 'Darurat').length;
+            document.getElementById('statMeeting').innerText = tickets.filter(t => t.status === 'Dijadwalkan Tatap Muka').length;
+
+            renderGuruInbox();
+            renderCharts(tickets);
+        }
+
+        function filterGuruInbox() {
+            renderGuruInbox();
+        }
+
+        function renderGuruInbox() {
+            const tickets = getTickets();
+            const search = document.getElementById('guruSearchInput').value.toLowerCase();
+            const urgencyFilter = document.getElementById('guruFilterUrgency').value;
+            const statusFilter = document.getElementById('guruFilterStatus').value;
+            const container = document.getElementById('guruInboxList');
+
+            let filtered = tickets.filter(t => {
+                const matchSearch = t.id.toLowerCase().includes(search) || t.name.toLowerCase().includes(search) || t.message.toLowerCase().includes(search);
+                const matchUrgency = urgencyFilter === 'all' || t.urgency === urgencyFilter;
+                const matchStatus = statusFilter === 'all' || t.status === statusFilter;
+                return matchSearch && matchUrgency && matchStatus;
+            });
+
+            container.innerHTML = '';
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">Tidak ada curhatan yang sesuai filter.</div>`;
+                return;
+            }
+
+            filtered.forEach(ticket => {
+                let urgencyBadgeClass = `urgency-badge-${ticket.urgency}`;
+
+                let statusBadge = ticket.status === 'Menunggu Respon' ?
+                    '<span class="text-xs font-bold text-amber-600">Menunggu Respon</span>' :
+                    '<span class="text-xs font-bold text-emerald-600">' + ticket.status + '</span>';
+
+                const row = document.createElement('div');
+                row.className = "p-5 hover:bg-slate-50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4";
+                row.innerHTML = `
+                    <div class="space-y-1.5 max-w-2xl">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-mono text-xs font-extrabold text-blue-900 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">#${ticket.id}</span>
+                            <span class="font-bold text-slate-900 text-sm">${escapeHtml(ticket.name)}</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${urgencyBadgeClass}">${ticket.urgency}</span>
+                            <span class="text-xs text-slate-400">• ${ticket.createdAt}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 font-medium">
+                            Kategori: <strong class="text-slate-700">${ticket.category}</strong> | Mood: ${ticket.mood} | Opsi: ${ticket.preferredMethod}
+                        </div>
+                        <p class="text-sm text-slate-800 line-clamp-2 font-medium">"${escapeHtml(ticket.message)}"</p>
+                    </div>
+
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <div class="text-right hidden sm:block mr-2">
+                            ${statusBadge}
+                        </div>
+                        <button onclick="openGuruReplyModal('${ticket.id}')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1.5">
+                            <i class="fa-solid fa-reply"></i>
+                            <span>Tanggapi</span>
+                        </button>
+                        <button onclick="deleteTicket('${ticket.id}')" title="Hapus Tiket" class="p-2 text-slate-400 hover:text-rose-600 text-xs transition-colors">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Open Reply Modal
+        function openGuruReplyModal(ticketId) {
+            const tickets = getTickets();
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (!ticket) return;
+
+            document.getElementById('replyModalTicketId').value = ticket.id;
+            document.getElementById('replyModalStudentName').innerText = `${ticket.name} (${ticket.isAnon ? 'Anonim' : 'Identitas Ditempel'})`;
+            document.getElementById('replyModalMeta').innerText = `Kode Tiket: ${ticket.id} • ${ticket.createdAt} • Kategori: ${ticket.category}`;
+            document.getElementById('replyModalMood').innerText = `Mood: ${ticket.mood}`;
+            document.getElementById('replyModalUrgency').innerText = `Urgensi ${ticket.urgency}`;
+            document.getElementById('replyModalUrgency').className = `px-2.5 py-0.5 rounded-full font-bold urgency-badge-${ticket.urgency}`;
+            document.getElementById('replyModalMessage').innerText = `"${ticket.message}"`;
+            
+            document.getElementById('replyModalResponseText').value = ticket.response || '';
+            document.getElementById('replyModalStatusSelect').value = ticket.status === 'Menunggu Respon' ? 'Sudah Dibalas' : ticket.status;
+
+            toggleScheduleFields();
+            document.getElementById('guruReplyModal').classList.remove('hidden');
+        }
+
+        function closeGuruReplyModal() {
+            document.getElementById('guruReplyModal').classList.add('hidden');
+        }
+
+        function toggleScheduleFields() {
+            const status = document.getElementById('replyModalStatusSelect').value;
+            const container = document.getElementById('scheduleFieldsContainer');
+            if (status === 'Dijadwalkan Tatap Muka') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function handleGuruReplySubmit(e) {
+            e.preventDefault();
+            const ticketId = document.getElementById('replyModalTicketId').value;
+            const newStatus = document.getElementById('replyModalStatusSelect').value;
+            const responseText = document.getElementById('replyModalResponseText').value.trim();
+
+            const tickets = getTickets();
+            const index = tickets.findIndex(t => t.id === ticketId);
+
+            if (index !== -1) {
+                tickets[index].status = newStatus;
+                tickets[index].response = responseText;
+
+                if (newStatus === 'Dijadwalkan Tatap Muka') {
+                    tickets[index].meetingInfo = {
+                        dateTime: document.getElementById('meetingDateTimeInput').value || new Date().toISOString(),
+                        location: document.getElementById('meetingLocationInput').value || 'Ruang Konseling BK Utama (Lantai 1 Gedung A)'
+                    };
+                } else {
+                    tickets[index].meetingInfo = null;
+                }
+
+                saveTickets(tickets);
+                closeGuruReplyModal();
+                renderGuruDashboard();
+                showToast('Tanggapan berhasil disimpan!', 'success');
+            }
+        }
+
+        function deleteTicket(ticketId) {
+            let tickets = getTickets();
+            tickets = tickets.filter(t => t.id !== ticketId);
+            saveTickets(tickets);
+            renderGuruDashboard();
+            showToast(`Tiket ${ticketId} berhasil dihapus.`, 'info');
+        }
+
+        // Render Charts with Chart.js
+        function renderCharts(tickets) {
+            // Category Bar Chart
+            const categories = {};
+            tickets.forEach(t => {
+                categories[t.category] = (categories[t.category] || 0) + 1;
+            });
+
+            const catLabels = Object.keys(categories);
+            const catCounts = Object.values(categories);
+
+            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            if (catChartInstance) catChartInstance.destroy();
+
+            catChartInstance = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: catLabels.length ? catLabels : ['Belum Ada Data'],
+                    datasets: [{
+                        label: 'Jumlah Curhatan',
+                        data: catCounts.length ? catCounts : [0],
+                        backgroundColor: '#2563eb',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+
+            // Urgency Doughnut Chart
+            const urgencies = { 'Darurat': 0, 'Tinggi': 0, 'Sedang': 0, 'Rendah': 0 };
+            tickets.forEach(t => {
+                if (urgencies[t.urgency] !== undefined) urgencies[t.urgency]++;
+            });
+
+            const ctxUrg = document.getElementById('urgencyChart').getContext('2d');
+            if (urgChartInstance) urgChartInstance.destroy();
+
+            urgChartInstance = new Chart(ctxUrg, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Darurat', 'Tinggi', 'Sedang', 'Rendah'],
+                    datasets: [{
+                        data: [urgencies['Darurat'], urgencies['Tinggi'], urgencies['Sedang'], urgencies['Rendah']],
+                        backgroundColor: ['#4c0519', '#e11d48', '#d97706', '#0284c7']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        // System Utilities
+        function exportDataJSON() {
+            const data = localStorage.getItem('ruangbk_sma_pertiwi_tickets') || '[]';
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ruang_bk_pertiwi_1_padang_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Data berhasil diekspor!', 'success');
+        }
+
+        function resetToDemoData() {
+            localStorage.setItem('ruangbk_sma_pertiwi_tickets', JSON.stringify(initialSampleTickets));
+            renderGuruDashboard();
+            showToast('Data berhasil di-reset ke data demo!', 'info');
+        }
+
+        function openEmergencyModal() {
+            document.getElementById('emergencyModal').classList.remove('hidden');
+        }
+        function closeEmergencyModal() {
+            document.getElementById('emergencyModal').classList.add('hidden');
+        }
+
+        // Custom Toast Helper (Replaces alert)
+        function showToast(msg, type = 'info') {
+            const colors = {
+                success: 'bg-emerald-900 border-emerald-500 text-emerald-200',
+                error: 'bg-rose-900 border-rose-500 text-rose-200',
+                info: 'bg-slate-900 border-slate-700 text-white'
+            };
+            const icons = {
+                success: 'fa-circle-check text-emerald-400',
+                error: 'fa-triangle-exclamation text-rose-400',
+                info: 'fa-circle-info text-blue-400'
+            };
+
+            const t = document.createElement('div');
+            t.className = `fixed bottom-5 right-5 ${colors[type] || colors.info} px-4 py-3 rounded-xl shadow-2xl text-xs font-bold z-50 flex items-center space-x-2 border transition-all transform translate-y-2`;
+            t.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-base"></i><span>${msg}</span>`;
+            document.body.appendChild(t);
+
+            setTimeout(() => {
+                t.style.opacity = '0';
+                setTimeout(() => t.remove(), 300);
+            }, 3000);
+        }
+
+        // Escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
